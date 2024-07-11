@@ -1,4 +1,3 @@
-import { useCanvasStore } from "./canvas.store";
-import { useToolsStore } from "./toolsStore";
+import { useUsersStore } from "./users.store";
 
-export { useToolsStore, useCanvasStore };
+export { useUsersStore };
