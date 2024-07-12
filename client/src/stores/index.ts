@@ -1,3 +1,5 @@
 import { useUsersStore } from "./users.store";
+import { useChatsStore } from "./chats.store";
+import { useAuthStore } from "./auth.store";
 
-export { useUsersStore };
+export { useUsersStore, useChatsStore, useAuthStore };

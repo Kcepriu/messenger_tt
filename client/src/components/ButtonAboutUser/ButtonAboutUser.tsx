@@ -1,14 +1,25 @@
-import { FC, useEffect } from "react";
-import { useUsersStore } from "../../stores";
+import { FC } from "react";
+import { IoPersonSharp } from "react-icons/io5";
+import { useAuthStore } from "../../stores";
 
 const ButtonAboutUser: FC = () => {
-  const readUser = useUsersStore((store) => store.readUser);
+  const { logOut, user } = useAuthStore((store) => store);
 
-  useEffect(() => {
-    readUser();
-  }, [readUser]);
+  const handlerLogOut = async () => {
+    await logOut();
+  };
 
-  return <p>ButtonAboutUser</p>;
+  return (
+    <div className="flex gap-4 items-center">
+      <div className="p-2 w-fit border border-border_main rounded-full ">
+        <IoPersonSharp size={48} />
+      </div>
+      <div>
+        <h2 className="font-bold text-2xl">{user?.name}</h2>
+        <button onClick={handlerLogOut}> Log Out</button>
+      </div>
+    </div>
+  );
 };
 
 export { ButtonAboutUser };

@@ -1,20 +1,22 @@
 import { create } from "zustand";
+import { useChatsStore } from "./chats.store";
+import { useAuthStore } from "./auth.store";
+import { usersService } from "../services";
 
-const ListUsers = [
-  { id: 1, name: "Serhii", numberUnreadMessages: 1, currentUser: false },
-  { id: 2, name: "Tamara", numberUnreadMessages: 0, currentUser: true },
-];
 interface IUsersStore {
   users: IUser[];
-  readUser: () => void;
+  readUsers: () => void;
   setCurrentUser: (currentUser: IUser) => void;
 }
 
 export const useUsersStore = create<IUsersStore>((set, get) => ({
   users: [],
 
-  readUser: () => {
-    set(() => ({ users: [...ListUsers] }));
+  readUsers: async () => {
+    const user = useAuthStore.getState().user;
+    if (!user) return;
+    const users = await usersService.getUsers(user.id);
+    set(() => ({ users }));
   },
 
   setCurrentUser: (currentUser) => {
@@ -24,5 +26,8 @@ export const useUsersStore = create<IUsersStore>((set, get) => ({
     });
 
     set(() => ({ users: newUsers }));
+
+    const readChats = useChatsStore.getState().readChats;
+    readChats(currentUser.id);
   },
 }));
