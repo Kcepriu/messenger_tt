@@ -3,8 +3,9 @@ interface IResponseUsers {
 }
 
 interface IUser {
-  id: number;
+  id: string;
   name: string;
-  numberUnreadMessages: number;
-  currentUser: boolean;
+  email: string;
+  numberUnreadMessages?: number;
+  currentUser?: boolean;
 }

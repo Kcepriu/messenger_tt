@@ -1,6 +1,8 @@
 interface IAuthUser {
-  id: number;
+  id: string;
   name: string;
+  email: string;
+  accessToken: string;
 }
 
 interface ILogInUser {

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useChatsStore } from "./chats.store";
 import { useAuthStore } from "./auth.store";
-import { usersService } from "../services";
+import { httpServices } from "../services/http.service";
 
 interface IUsersStore {
   users: IUser[];
@@ -15,7 +15,7 @@ export const useUsersStore = create<IUsersStore>((set, get) => ({
   readUsers: async () => {
     const user = useAuthStore.getState().user;
     if (!user) return;
-    const users = await usersService.getUsers(user.id);
+    const users = await httpServices.getUsers();
     set(() => ({ users }));
   },
 

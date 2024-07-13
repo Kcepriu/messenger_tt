@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useFormik } from "formik";
 import { Button, TextField } from "@mui/material";
 import { useNavigate, Navigate } from "react-router-dom";
@@ -7,18 +7,28 @@ import { APP_KEYS } from "../../constants";
 import { useAuthStore } from "../../stores";
 
 import { validationSchema } from "./Registration.schema";
+import { showErrorMessage } from "../../helpers/message";
 
 const Registration: FC = () => {
   const navigate = useNavigate();
-  const { registration, isLoading, isLoggedIn } = useAuthStore(
-    (store) => store
-  );
+  const {
+    registration,
+    isLoading,
+    isLoggedIn,
+    clearMessageError,
+    messageError,
+  } = useAuthStore((store) => store);
 
   const handleSubmit = async (values: IRegistrationUser) => {
-    const { confirmPassword, ...user } = values;
-    void confirmPassword;
-    registration(user);
+    registration(values);
   };
+
+  useEffect(() => {
+    if (!messageError) return;
+    showErrorMessage(messageError);
+
+    clearMessageError();
+  }, [messageError, clearMessageError]);
 
   const formik = useFormik({
     initialValues: {

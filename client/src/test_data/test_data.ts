@@ -90,6 +90,6 @@ export const ListTestChats: IChat[] = [
 ];
 
 export const ListUsers = [
-  { id: 1, name: "Serhii", numberUnreadMessages: 1, currentUser: false },
-  { id: 2, name: "Tamara", numberUnreadMessages: 0, currentUser: false },
+  { id: "1", name: "Serhii", numberUnreadMessages: 1, currentUser: false },
+  { id: "2", name: "Tamara", numberUnreadMessages: 0, currentUser: false },
 ];

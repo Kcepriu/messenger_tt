@@ -5,7 +5,7 @@ interface IChatsStore {
   chats: IChat[];
   currentCreateChat: IChat | null;
 
-  readChats: (idUser: number) => void;
+  readChats: (idUser: string) => void;
   setStatusChatToEdit: (editChat: IChat) => void;
   deleteChat: (deletedChat: IChat) => void;
   saveChat: (editChat: IChat) => void;
@@ -14,7 +14,7 @@ interface IChatsStore {
 export const useChatsStore = create<IChatsStore>((set, get) => ({
   chats: [],
   currentCreateChat: null,
-  readChats: async (idUser: number) => {
+  readChats: async (idUser: string) => {
     const chats = await chatsService.getChats(idUser);
     set(() => ({
       chats,
