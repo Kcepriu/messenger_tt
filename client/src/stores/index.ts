@@ -1,4 +1,5 @@
-import { useCanvasStore } from "./canvas.store";
-import { useToolsStore } from "./toolsStore";
+import { useUsersStore } from "./users.store";
+import { useChatsStore } from "./chats.store";
+import { useAuthStore } from "./auth.store";
 
-export { useToolsStore, useCanvasStore };
+export { useUsersStore, useChatsStore, useAuthStore };

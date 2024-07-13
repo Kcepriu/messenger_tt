@@ -1,1 +1,5 @@
-export const URLS = { urlServerWS: "ws://localhost:5000" };
+export const ROUTER_KEYS = {
+  ROOT: "/",
+  LOGIN: "/login",
+  REGISTRATION: "/registration",
+};
