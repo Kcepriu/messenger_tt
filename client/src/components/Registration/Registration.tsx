@@ -23,6 +23,7 @@ const Registration: FC = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
+      name: "",
       password: "",
       confirmPassword: "",
     },
@@ -47,6 +48,17 @@ const Registration: FC = () => {
           onBlur={formik.handleBlur}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
+          required
+        />
+        <TextField
+          id="name"
+          name="name"
+          label="Name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
           required
         />
         <TextField

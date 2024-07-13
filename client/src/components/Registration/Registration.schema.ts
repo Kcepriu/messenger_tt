@@ -12,6 +12,8 @@ export const validationSchema = yup.object({
       message: "Invalid email address",
     })
     .required("Email is required"),
+  name: yup.string().min(5).max(15).required("Name is required"),
+
   password: yup.string().min(5).max(15).required("Password is required"),
   confirmPassword: yup
     .string()

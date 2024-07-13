@@ -16,7 +16,9 @@ const EditMessage: FC = () => {
     >
       <ButtonAttach />
       <div className="w-full h-full  flex flex-col gap-4">
-        {attaches.length > 0 && <Attaches attaches={attaches} />}
+        {attaches.length > 0 && (
+          <Attaches attaches={attaches} withDelete={true} />
+        )}
         <textarea placeholder="Input text message" className=" grow p-4" />
       </div>
 

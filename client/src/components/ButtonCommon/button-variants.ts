@@ -10,6 +10,7 @@ export const buttonVariants = cva(
         small: ["h-6", "min-w-6"],
         medium: ["h-8", "min-w-8"],
         big: ["h-12", "min-w-12"],
+        tiny: ["h-4", "min-w-4", "p-0"],
       },
       circle: {
         true: "rounded-full",

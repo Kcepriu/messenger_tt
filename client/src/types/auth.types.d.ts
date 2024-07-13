@@ -10,6 +10,7 @@ interface ILogInUser {
 
 interface IRegistrationUser {
   email: string;
+  name: string;
   password: string;
   confirmPassword: string;
 }
