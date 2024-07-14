@@ -1,8 +1,13 @@
 interface IChat {
-  id: number;
+  id: string;
   attaches: IAttach[];
   message: string;
-  owner: number;
-  recipient: number;
+  owner: string;
+  recipient: string;
   status: "send" | "created" | "edit";
+}
+
+interface ICreatedChat {
+  attaches: IAttach[];
+  message: string;
 }

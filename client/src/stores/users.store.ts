@@ -5,12 +5,14 @@ import { httpServices } from "../services/http.service";
 
 interface IUsersStore {
   users: IUser[];
+  currentUser: IUser | null;
   readUsers: () => void;
   setCurrentUser: (currentUser: IUser) => void;
 }
 
 export const useUsersStore = create<IUsersStore>((set, get) => ({
   users: [],
+  currentUser: null,
 
   readUsers: async () => {
     const user = useAuthStore.getState().user;
@@ -25,7 +27,7 @@ export const useUsersStore = create<IUsersStore>((set, get) => ({
       return { ...user, currentUser: currentUser.id === user.id };
     });
 
-    set(() => ({ users: newUsers }));
+    set(() => ({ users: newUsers, currentUser }));
 
     const readChats = useChatsStore.getState().readChats;
     readChats(currentUser.id);

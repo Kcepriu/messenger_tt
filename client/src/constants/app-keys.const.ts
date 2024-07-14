@@ -16,4 +16,5 @@ export const BACKEND_ROUTES = {
   REGISTER: "/api/auth/register",
   LOGOUT: "/api/auth/logout",
   USERS: "/api/auth/users",
+  MESSAGE: "/api/chats",
 };

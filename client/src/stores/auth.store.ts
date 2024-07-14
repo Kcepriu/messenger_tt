@@ -5,6 +5,7 @@ interface IAuthStore {
   isLoggedIn: boolean;
   isLoading: boolean;
   messageError: string;
+  accessToken: string;
   logIn: (values: ILogInUser) => void;
   registration: (values: IRegistrationUser) => void;
   logOut: () => void;
@@ -17,6 +18,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
   isLoggedIn: false,
   isLoading: true,
   messageError: "",
+  accessToken: "",
 
   autoLogIn: async () => {
     await set(() => ({
@@ -29,6 +31,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
       user,
       isLoggedIn: !!user,
       isLoading: false,
+      accessToken: !user ? "" : user.accessToken,
     }));
   },
 
@@ -46,6 +49,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
         user,
         isLoggedIn: !!user,
         isLoading: false,
+        accessToken: !user ? "" : user.accessToken,
       }));
     } catch (err) {
       const messageError = err instanceof Error ? err.message : "Error LogIn";
@@ -53,6 +57,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
         user: null,
         isLoggedIn: false,
         isLoading: false,
+        accessToken: "",
         messageError,
       }));
     }
@@ -72,6 +77,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
         user,
         isLoggedIn: !!user,
         isLoading: false,
+        accessToken: !user ? "" : user.accessToken,
       }));
     } catch (err) {
       const messageError =
@@ -80,6 +86,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
         user: null,
         isLoggedIn: false,
         isLoading: false,
+        accessToken: "",
         messageError,
       }));
     }
@@ -92,8 +99,10 @@ export const useAuthStore = create<IAuthStore>((set) => ({
       user: null,
       isLoggedIn: false,
       isLoading: false,
+      accessToken: "",
     }));
   },
+
   clearMessageError: () => {
     set(() => ({
       messageError: "",

@@ -34,65 +34,59 @@ class HttpService {
     this.saveTokenToLocalStorage(this.accessToken);
   };
 
-  // // * Todo
-  // async fetchAllTodos(params: IParamsTodo): Promise<ITodosWithCount> {
-  //   const { data: responsData } = await this.instance.get(BACKEND_KEYS.TODOS, {
-  //     params,
-  //   });
+  async getChats(idRecipient: string): Promise<IChat[]> {
+    try {
+      const { data: responsData } = await this.instance.get(
+        `${BACKEND_ROUTES.MESSAGE}/${idRecipient}`
+      );
 
-  //   const { code, data: todos, total_count: totalCount } = responsData;
-  //   if (code !== 200) return { todos: [], totalCount: 0 };
+      const { code, data } = responsData;
 
-  //   return { todos, totalCount };
-  // }
+      if (code === 200) return data;
+    } catch {
+      return [];
+    }
+    return [];
+  }
 
-  // async fetchTodoById(id: string): Promise<ITodo | null> {
-  //   const { data: responsData } = await this.instance.get(
-  //     `${BACKEND_KEYS.TODOS}/${id}`
-  //   );
+  async deleteChat(id: string): Promise<boolean> {
+    try {
+      const { data: responsData } = await this.instance.delete(
+        `${BACKEND_ROUTES.MESSAGE}/${id}`
+      );
 
-  //   const { code, data } = responsData;
-  //   if (code !== 200) return null;
+      const { code, data } = responsData;
 
-  //   return data;
-  // }
+      if (code === 200) return data;
+    } catch {
+      return false;
+    }
+    return false;
+  }
 
-  // async deleteTodo(id: string): Promise<string | null> {
-  //   const { data: responsData } = await this.instance.delete(
-  //     `${BACKEND_KEYS.TODOS}/${id}`
-  //   );
+  async addChats(idRecipient: string, chat: ICreatedChat): Promise<IChat> {
+    const { data: responsData } = await this.instance.post(
+      `${BACKEND_ROUTES.MESSAGE}/${idRecipient}`,
+      chat
+    );
 
-  //   const { code, data } = responsData;
-  //   if (code !== 200) return null;
+    const { code, data, message } = responsData;
+    if (code !== 201) throw new Error(message);
 
-  //   return data.id;
-  // }
+    return data;
+  }
 
-  // async updateTodo(id: string, todo: ITodo): Promise<ITodo | null> {
-  //   const { data: responsData } = await this.instance.put(
-  //     `${BACKEND_KEYS.TODOS}/${id}`,
-  //     todo
-  //   );
+  async editChats(id: string, chat: IChat): Promise<IChat> {
+    const { data: responsData } = await this.instance.put(
+      `${BACKEND_ROUTES.MESSAGE}/${id}`,
+      chat
+    );
 
-  //   const { code, data } = responsData;
-  //   if (code !== 200) return null;
+    const { code, data, message } = responsData;
+    if (code !== 200) throw new Error(message);
 
-  //   return data;
-  // }
-
-  // async createTodo(todo: ITodo): Promise<ITodo | null> {
-  //   const { id, ...newTodo } = todo;
-
-  //   const { data: responsData } = await this.instance.post(
-  //     BACKEND_KEYS.TODOS,
-  //     newTodo
-  //   );
-
-  //   const { code, data } = responsData;
-  //   if (code !== 201) return null;
-
-  //   return data;
-  // }
+    return data;
+  }
 
   async getUsers(): Promise<IUser[]> {
     try {
