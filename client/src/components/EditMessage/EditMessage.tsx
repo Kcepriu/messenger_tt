@@ -1,7 +1,8 @@
-import { FC } from "react";
+import { FC, useState, ChangeEvent, useEffect } from "react";
 import { ButtonAttach } from "../ButtonAttach/ButtonAttach";
 import { ButtonSend } from "../ButtonSend/ButtonSend";
 import { Attaches } from "../Attaches/Attaches";
+import { useUsersStore, useChatsStore } from "../../stores";
 
 const attaches: IAttach[] = [
   { id: 1, name: "file.txt", url: "" },
@@ -9,6 +10,26 @@ const attaches: IAttach[] = [
 ];
 
 const EditMessage: FC = () => {
+  const currentUser = useUsersStore((store) => store.currentUser);
+  const { addChat } = useChatsStore((store) => store);
+
+  const [message, setMessage] = useState<string>("");
+
+  const handlerSend = async () => {
+    if (!message || !currentUser) return;
+
+    addChat(currentUser.id, { message, attaches: [] });
+    setMessage("");
+  };
+
+  const handlerChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
+  useEffect(() => {
+    setMessage("");
+  }, [currentUser]);
+
   return (
     <div
       className="w-full h-full p-4 border border-border_main rounded-lg
@@ -19,10 +40,15 @@ const EditMessage: FC = () => {
         {attaches.length > 0 && (
           <Attaches attaches={attaches} withDelete={true} />
         )}
-        <textarea placeholder="Input text message" className=" grow p-4" />
+        <textarea
+          placeholder="Input text message"
+          className="grow p-4"
+          value={message}
+          onChange={handlerChangeText}
+        />
       </div>
 
-      <ButtonSend />
+      <ButtonSend handlerSend={handlerSend} />
     </div>
   );
 };

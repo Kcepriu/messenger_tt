@@ -6,7 +6,7 @@ class ChatsService {
     this.baseUrl = process.env.VITE_BACKEND_URL || "";
   }
 
-  async getChats(idUser: number): Promise<IChat[]> {
+  async getChats(idUser: string): Promise<IChat[]> {
     console.log("baseUrl", this.baseUrl);
     console.log("idUser", idUser);
 

@@ -1,21 +1,23 @@
 import { create } from "zustand";
 import { useChatsStore } from "./chats.store";
 import { useAuthStore } from "./auth.store";
-import { usersService } from "../services";
+import { httpServices } from "../services/http.service";
 
 interface IUsersStore {
   users: IUser[];
+  currentUser: IUser | null;
   readUsers: () => void;
   setCurrentUser: (currentUser: IUser) => void;
 }
 
 export const useUsersStore = create<IUsersStore>((set, get) => ({
   users: [],
+  currentUser: null,
 
   readUsers: async () => {
     const user = useAuthStore.getState().user;
     if (!user) return;
-    const users = await usersService.getUsers(user.id);
+    const users = await httpServices.getUsers();
     set(() => ({ users }));
   },
 
@@ -25,7 +27,7 @@ export const useUsersStore = create<IUsersStore>((set, get) => ({
       return { ...user, currentUser: currentUser.id === user.id };
     });
 
-    set(() => ({ users: newUsers }));
+    set(() => ({ users: newUsers, currentUser }));
 
     const readChats = useChatsStore.getState().readChats;
     readChats(currentUser.id);

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useFormik } from "formik";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -7,14 +7,24 @@ import { MainLoader } from "../MainLoader/MainLoader";
 import { APP_KEYS } from "../../constants";
 import { useAuthStore } from "../../stores";
 import { validationSchema } from "./Login.schema";
+import { showErrorMessage } from "../../helpers/message";
 
 const Login: FC = () => {
   const navigate = useNavigate();
-  const { logIn, isLoading } = useAuthStore((store) => store);
+  const { logIn, isLoading, clearMessageError, messageError } = useAuthStore(
+    (store) => store
+  );
 
   const handleSubmit = async (values: ILogInUser) => {
     await logIn(values);
   };
+
+  useEffect(() => {
+    if (!messageError) return;
+    showErrorMessage(messageError);
+
+    clearMessageError();
+  }, [messageError, clearMessageError]);
 
   const formik = useFormik({
     initialValues: {

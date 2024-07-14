@@ -9,7 +9,6 @@ interface IProps {
 const Attaches: FC<IProps> = ({ attaches, withDelete = false }) => {
   const handlerDelete = (attach: IAttach) => {
     attaches = attaches.filter((element) => element.id !== attach.id);
-    console.log("attaches", attaches);
   };
 
   return (

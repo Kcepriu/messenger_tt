@@ -1,18 +1,20 @@
-interface IAuthUser {
+export interface IUser {
   id: string;
   name: string;
   email: string;
+  password: string;
   accessToken: string;
 }
 
-interface ILogInUser {
+export interface IUserInform {
+  id: string;
+  name: string;
   email: string;
-  password: string;
 }
 
-interface IRegistrationUser {
-  email: string;
+export interface ICreatedUser {
   name: string;
+  email: string;
   password: string;
   confirmPassword: string;
 }
