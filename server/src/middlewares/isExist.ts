@@ -1,18 +1,26 @@
-import { Response, Request, NextFunction } from 'express';
-import { BaseEntity, FindOptionsWhere } from 'typeorm';
-import HttpError from '../helpers/HttpError';
+import { Response, Request, NextFunction } from "express";
+import { connectorDB } from "../config/database";
+import { doc, getDoc } from "firebase/firestore";
+import HttpError from "../helpers/HttpError";
 
-const isExist = <T extends BaseEntity>(Entity: typeof BaseEntity) => {
+const isExist = (nameCollection: string) => {
   const func = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
-    const todo = await Entity.findOneBy({ id } as unknown as FindOptionsWhere<T>);
+    if (!connectorDB.db) {
+      throw HttpError(500, "Not connect to database");
+    }
 
-    if (!todo) {
+    const documentRef = doc(connectorDB.db, nameCollection, id);
+    const documentSnapshot = await getDoc(documentRef);
+
+    if (!documentSnapshot.exists()) {
       next(HttpError(400, `Unable to find id: ${id}`));
     }
+
     next();
   };
+
   return func;
 };
 

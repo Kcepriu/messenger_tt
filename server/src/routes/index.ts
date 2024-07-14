@@ -1,5 +1,5 @@
 import { Application } from "express";
-//import messagesRouter from "./api/messages.route";
+import chatsRouter from "./api/chats.route";
 import authRouter from "./api/auth.route";
 
 class AppRouter {
@@ -11,7 +11,7 @@ class AppRouter {
       res.send("API Running");
     });
     this.app.use("/api/auth", authRouter);
-    // this.app.use("/api/messages", messagesRouter);
+    this.app.use("/api/chats", chatsRouter);
   }
 }
 
