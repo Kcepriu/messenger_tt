@@ -3,6 +3,7 @@ import Joi from "joi";
 export const schemaAddChat = Joi.object({
   message: Joi.string().min(5).max(1000).required(),
   status: Joi.string().valid("send", "created", "edit"),
+  attaches: Joi.array().required(),
 });
 
 export const schemaEditChat = Joi.object({
@@ -11,4 +12,5 @@ export const schemaEditChat = Joi.object({
   owner: Joi.string().min(5).max(100).required(),
   recipient: Joi.string().min(5).max(100).required(),
   status: Joi.string().valid("send", "created", "edit").required(),
+  attaches: Joi.array().required(),
 });
