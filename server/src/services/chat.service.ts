@@ -33,6 +33,7 @@ class ChatService {
 
     const q = query(
       collection(connectorDB.db, "messages"),
+
       or(
         and(
           where("owner", "==", idOwner),
@@ -47,17 +48,19 @@ class ChatService {
 
     const querySnapshot = await getDocs(q);
 
-    const chats = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      if (isIChat(data)) {
-        return {
-          ...data,
-          id: doc.id,
-        };
-      } else {
-        throw HttpError(500, "Invalid data");
-      }
-    });
+    const chats = querySnapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        if (isIChat(data)) {
+          return {
+            ...data,
+            id: doc.id,
+          };
+        } else {
+          throw HttpError(500, "Invalid data");
+        }
+      })
+      .sort((a, b) => a.createdAt - b.createdAt);
     return chats;
   }
 
@@ -124,10 +127,10 @@ class ChatService {
     }
 
     try {
-      const documentRef = await addDoc(
-        collection(connectorDB.db, "messages"),
-        data
-      );
+      const documentRef = await addDoc(collection(connectorDB.db, "messages"), {
+        ...data,
+        createdAt: Date.now(),
+      });
 
       const createdDocument = await this.findChatById(documentRef.id);
 

@@ -5,4 +5,5 @@ export interface IChat {
   recipient: string;
   attaches: [];
   status: "send" | "created" | "edit";
+  createdAt: number;
 }
