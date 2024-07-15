@@ -5,6 +5,7 @@ interface IChat {
   owner: string;
   recipient: string;
   status: "send" | "created" | "edit";
+  createdAt: number;
 }
 
 interface ICreatedChat {

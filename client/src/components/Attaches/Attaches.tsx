@@ -3,14 +3,10 @@ import { Attach } from "../Attach/Attach";
 
 interface IProps {
   attaches: IAttach[];
-  withDelete?: boolean;
+  handlerDelete: (id: string) => void;
 }
 
-const Attaches: FC<IProps> = ({ attaches, withDelete = false }) => {
-  const handlerDelete = (attach: IAttach) => {
-    attaches = attaches.filter((element) => element.id !== attach.id);
-  };
-
+const Attaches: FC<IProps> = ({ attaches, handlerDelete }) => {
   return (
     <ul className="w-full flex gap-4">
       {attaches.map((attach) => {
@@ -18,8 +14,7 @@ const Attaches: FC<IProps> = ({ attaches, withDelete = false }) => {
           <li key={attach.id}>
             <Attach
               attach={attach}
-              withDelete={withDelete}
-              handlerDelete={() => handlerDelete(attach)}
+              handlerDelete={() => handlerDelete(attach.id)}
             />
           </li>
         );

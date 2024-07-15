@@ -17,4 +17,5 @@ export const BACKEND_ROUTES = {
   LOGOUT: "/api/auth/logout",
   USERS: "/api/auth/users",
   MESSAGE: "/api/chats",
+  FILES: "/api/files",
 };

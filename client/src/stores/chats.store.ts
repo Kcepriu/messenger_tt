@@ -5,21 +5,26 @@ interface IChatsStore {
   chats: IChat[];
   messageError: string;
   isLoading: boolean;
-  currentCreateChat: IChat | null;
+  receivedWSChat: IChat | null;
 
   readChats: (idUser: string) => void;
   setStatusChatToEdit: (editChat: IChat) => void;
   deleteChat: (deletedChat: IChat) => void;
   saveChat: (editChat: IChat) => void;
-  addChat: (idRecipient: string, newChat: ICreatedChat) => void;
+  addChat: (
+    idRecipient: string,
+    newChat: ICreatedChat
+  ) => Promise<IChat | null>;
+  onlyPushChat: (chat: IChat) => void;
   clearMessageError: () => void;
+  setReceivedWSChat: (receivedWSChat: IChat | null) => void;
 }
 
 export const useChatsStore = create<IChatsStore>((set, get) => ({
   chats: [],
   messageError: "",
   isLoading: false,
-  currentCreateChat: null,
+  receivedWSChat: null,
   readChats: async (idUser: string) => {
     await set(() => ({
       isLoading: true,
@@ -108,6 +113,7 @@ export const useChatsStore = create<IChatsStore>((set, get) => ({
       const chat = await httpServices.addChats(idRecipient, newChat);
 
       set((store) => ({ chats: [...store.chats, chat], isLoading: false }));
+      return chat;
     } catch (err) {
       const messageError =
         err instanceof Error ? err.message : "Error add chat";
@@ -116,11 +122,22 @@ export const useChatsStore = create<IChatsStore>((set, get) => ({
         messageError,
       }));
     }
+    return null;
+  },
+
+  onlyPushChat: (chat: IChat) => {
+    set((store) => ({ chats: [...store.chats, chat], isLoading: false }));
   },
 
   clearMessageError: () => {
     set(() => ({
       messageError: "",
+    }));
+  },
+
+  setReceivedWSChat: (receivedWSChat: IChat | null) => {
+    set(() => ({
+      receivedWSChat,
     }));
   },
 }));
