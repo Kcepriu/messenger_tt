@@ -1,5 +1,5 @@
 import { FC } from "react";
-// import { Attaches } from "../Attaches/Attaches";
+import { AttachesReadOnly } from "../AttachesReadOnly/AttachesReadOnly";
 
 interface IProps {
   chat: IChat;
@@ -10,7 +10,7 @@ const MessageNotMy: FC<IProps> = ({ chat }) => {
   return (
     <div className=" block w-full ">
       <div className="p-4 flex flex-col gap-4 w-width_60p ">
-        {/* {attaches.length > 0 && <Attaches attaches={attaches} />} */}
+        {attaches.length > 0 && <AttachesReadOnly attaches={attaches} />}
         <p className="block w-full">{message}</p>
       </div>
     </div>

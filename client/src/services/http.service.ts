@@ -34,7 +34,7 @@ class HttpService {
     this.saveTokenToLocalStorage(this.accessToken);
   };
 
-  async uploadFile(dataFiles: FormData): Promise<IChat[]> {
+  async uploadFile(dataFiles: FormData): Promise<string[]> {
     const { data: responseData } = await this.instance.post(
       BACKEND_ROUTES.FILES,
       dataFiles,

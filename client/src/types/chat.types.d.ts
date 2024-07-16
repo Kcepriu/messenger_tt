@@ -1,6 +1,6 @@
 interface IChat {
   id: string;
-  attaches: IAttach[];
+  attaches: string[];
   message: string;
   owner: string;
   recipient: string;
@@ -9,6 +9,6 @@ interface IChat {
 }
 
 interface ICreatedChat {
-  attaches: IAttach[];
+  attaches: string[];
   message: string;
 }

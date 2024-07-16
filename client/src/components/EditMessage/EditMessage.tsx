@@ -29,18 +29,19 @@ const EditMessage: FC = () => {
     if (!message || !currentUser) return;
 
     const attaches = await handleSendFile();
+
     void attaches;
 
-    // const chat = await addChat(currentUser.id, { message, attaches: [] });
+    const chat = await addChat(currentUser.id, { message, attaches });
 
-    // if (!chat) return;
+    if (!chat) return;
 
-    // wsService.sendMessage(currentUser.id, JSON.stringify(chat));
-    // setMessage("");
-    // setAttachFiles([]);
+    wsService.sendMessage(currentUser.id, JSON.stringify(chat));
+    setMessage("");
+    setAttachFiles([]);
   };
 
-  const handleSendFile = async () => {
+  const handleSendFile = async (): Promise<string[]> => {
     if (attachFiles.length === 0) return [];
 
     const formData = new FormData();
