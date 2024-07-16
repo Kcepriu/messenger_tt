@@ -2,9 +2,11 @@
 
 import { initializeApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
+import { getStorage, FirebaseStorage } from "firebase/storage";
 
 class ConnectorFirebase {
   db: Firestore | null = null;
+  storage: FirebaseStorage | null = null;
 
   async connect() {
     try {
@@ -21,6 +23,7 @@ class ConnectorFirebase {
       const app = initializeApp(firebaseConfig);
 
       this.db = await getFirestore(app);
+      this.storage = getStorage(app);
       console.log("Firestore Connected...");
     } catch (err) {
       if (err instanceof Error) console.error(err.message);

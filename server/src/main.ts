@@ -1,5 +1,4 @@
 import express, { Response, Request, NextFunction } from "express";
-// import WebSocket from "ws";
 import { createServer } from "http";
 import bodyParser from "body-parser";
 import logger from "morgan";
@@ -8,11 +7,13 @@ import "dotenv/config";
 import AppRouter from "./routes";
 import { IError } from "./types/servises.type";
 import { connectorDB, initConnector } from "./config/database";
+import { WsServer } from "./ws/ws.service";
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 const server = createServer(app);
+const wsServer = new WsServer(server);
 
 initConnector(connectorDB);
 
@@ -35,34 +36,6 @@ app.use((err: IError, _req: Request, res: Response, next: NextFunction) => {
   res.status(status).json({ code: status, message });
   next();
 });
-
-// const wss = new WebSocket.Server(
-//   {
-//     server,
-//     // path: "/websockets",
-//   },
-//   () => console.log("Start websocket")
-// );
-
-// wss.on("connection", function connection(ws) {
-//   console.log("Connect client");
-
-//   ws.on("error", console.error);
-
-//   ws.on("message", function message(data) {
-//     const inputObj = JSON.parse(data.toString());
-
-//     console.log("received: ", inputObj);
-
-//     ws.send("Test dddd");
-//   });
-
-//   ws.on("close", (e) => {
-//     console.log("Cose connection", e);
-//   });
-
-//   ws.send("something");
-// });
 
 server.listen(PORT, () => console.log(`Server start on PORT ${PORT}`));
 

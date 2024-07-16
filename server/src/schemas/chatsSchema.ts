@@ -13,4 +13,5 @@ export const schemaEditChat = Joi.object({
   recipient: Joi.string().min(5).max(100).required(),
   status: Joi.string().valid("send", "created", "edit").required(),
   attaches: Joi.array().required(),
+  createdAt: Joi.number(),
 });

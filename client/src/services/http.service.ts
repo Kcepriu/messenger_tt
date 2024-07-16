@@ -34,13 +34,31 @@ class HttpService {
     this.saveTokenToLocalStorage(this.accessToken);
   };
 
+  async uploadFile(dataFiles: FormData): Promise<string[]> {
+    const { data: responseData } = await this.instance.post(
+      BACKEND_ROUTES.FILES,
+      dataFiles,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    const { code, data, message } = responseData;
+
+    if (code !== 200) throw new Error(message);
+
+    return data;
+  }
+
   async getChats(idRecipient: string): Promise<IChat[]> {
     try {
-      const { data: responsData } = await this.instance.get(
+      const { data: responseData } = await this.instance.get(
         `${BACKEND_ROUTES.MESSAGE}/${idRecipient}`
       );
 
-      const { code, data } = responsData;
+      const { code, data } = responseData;
 
       if (code === 200) return data;
     } catch {
@@ -51,11 +69,11 @@ class HttpService {
 
   async deleteChat(id: string): Promise<boolean> {
     try {
-      const { data: responsData } = await this.instance.delete(
+      const { data: responseData } = await this.instance.delete(
         `${BACKEND_ROUTES.MESSAGE}/${id}`
       );
 
-      const { code, data } = responsData;
+      const { code, data } = responseData;
 
       if (code === 200) return data;
     } catch {
@@ -65,24 +83,24 @@ class HttpService {
   }
 
   async addChats(idRecipient: string, chat: ICreatedChat): Promise<IChat> {
-    const { data: responsData } = await this.instance.post(
+    const { data: responseData } = await this.instance.post(
       `${BACKEND_ROUTES.MESSAGE}/${idRecipient}`,
       chat
     );
 
-    const { code, data, message } = responsData;
+    const { code, data, message } = responseData;
     if (code !== 201) throw new Error(message);
 
     return data;
   }
 
   async editChats(id: string, chat: IChat): Promise<IChat> {
-    const { data: responsData } = await this.instance.put(
+    const { data: responseData } = await this.instance.put(
       `${BACKEND_ROUTES.MESSAGE}/${id}`,
       chat
     );
 
-    const { code, data, message } = responsData;
+    const { code, data, message } = responseData;
     if (code !== 200) throw new Error(message);
 
     return data;
@@ -90,11 +108,11 @@ class HttpService {
 
   async getUsers(): Promise<IUser[]> {
     try {
-      const { data: responsData } = await this.instance.get(
+      const { data: responseData } = await this.instance.get(
         BACKEND_ROUTES.USERS
       );
 
-      const { code, data } = responsData;
+      const { code, data } = responseData;
 
       if (code === 200) return data;
     } catch {
@@ -108,11 +126,11 @@ class HttpService {
     if (!this.accessToken) return null;
 
     try {
-      const { data: responsData } = await this.instance.get(
+      const { data: responseData } = await this.instance.get(
         BACKEND_ROUTES.CURRENT_USER
       );
 
-      const { code, data } = responsData;
+      const { code, data } = responseData;
 
       if (code === 200) return data;
     } catch {
@@ -123,12 +141,12 @@ class HttpService {
   }
 
   async login(user: ILogInUser): Promise<IAuthUser> {
-    const { data: responsData } = await this.instance.post(
+    const { data: responseData } = await this.instance.post(
       BACKEND_ROUTES.LOGIN,
       user
     );
 
-    const { code, data, message } = responsData;
+    const { code, data, message } = responseData;
 
     if (code !== 200) throw new Error(message);
 
@@ -138,12 +156,12 @@ class HttpService {
   }
 
   async register(user: IRegistrationUser): Promise<IAuthUser> {
-    const { data: responsData } = await this.instance.post(
+    const { data: responseData } = await this.instance.post(
       BACKEND_ROUTES.REGISTER,
       user
     );
 
-    const { code, data, message } = responsData;
+    const { code, data, message } = responseData;
 
     if (code !== 200) throw new Error(message);
 
@@ -154,11 +172,11 @@ class HttpService {
 
   async logout(): Promise<boolean> {
     try {
-      const { data: responsData } = await this.instance.post(
+      const { data: responseData } = await this.instance.post(
         BACKEND_ROUTES.LOGOUT
       );
 
-      const { code } = responsData;
+      const { code } = responseData;
       if (code !== 200) return false;
 
       return true;

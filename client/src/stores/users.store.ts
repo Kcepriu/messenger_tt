@@ -8,6 +8,7 @@ interface IUsersStore {
   currentUser: IUser | null;
   readUsers: () => void;
   setCurrentUser: (currentUser: IUser) => void;
+  increaseNumberUnreadMessages: (userId: string) => void;
 }
 
 export const useUsersStore = create<IUsersStore>((set, get) => ({
@@ -24,12 +25,37 @@ export const useUsersStore = create<IUsersStore>((set, get) => ({
   setCurrentUser: (currentUser) => {
     const users = get().users;
     const newUsers = users.map((user) => {
-      return { ...user, currentUser: currentUser.id === user.id };
+      user.numberUnreadMessages;
+      return {
+        ...user,
+        currentUser: currentUser.id === user.id,
+        numberUnreadMessages:
+          currentUser.id === user.id ? 0 : user.numberUnreadMessages,
+      };
     });
 
     set(() => ({ users: newUsers, currentUser }));
 
     const readChats = useChatsStore.getState().readChats;
     readChats(currentUser.id);
+  },
+
+  increaseNumberUnreadMessages: (userId: string) => {
+    const users = get().users;
+    const indexUser = users.findIndex((user) => user.id === userId);
+
+    if (indexUser === -1) return;
+
+    const user = { ...users[indexUser] };
+
+    user.numberUnreadMessages = !user.numberUnreadMessages
+      ? 1
+      : user.numberUnreadMessages + 1;
+
+    users[indexUser] = { ...user };
+
+    set(() => ({
+      users: [...users],
+    }));
   },
 }));

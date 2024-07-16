@@ -1,6 +1,8 @@
 import { Response, Request } from "express";
+
 import { RequestType } from "../types/servises.type";
 import HttpError from "../helpers/HttpError";
+
 import { chatService, type ChatService } from "../services/chat.service";
 
 export class ChatsController {

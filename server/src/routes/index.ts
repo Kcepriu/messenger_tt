@@ -1,6 +1,7 @@
 import { Application } from "express";
 import chatsRouter from "./api/chats.route";
 import authRouter from "./api/auth.route";
+import filesRouter from "./api/files.route";
 
 class AppRouter {
   constructor(private app: Application) {}
@@ -12,6 +13,7 @@ class AppRouter {
     });
     this.app.use("/api/auth", authRouter);
     this.app.use("/api/chats", chatsRouter);
+    this.app.use("/api/files", filesRouter);
   }
 }
 
